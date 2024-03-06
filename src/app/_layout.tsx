@@ -9,6 +9,7 @@ import {
   Poppins_500Medium,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync();
 export default function Layout() {
@@ -22,9 +23,9 @@ export default function Layout() {
 
   SplashScreen.hideAsync();
   return (
-    <>
+    <SafeAreaProvider style={{ flex: 1 }}>
       <StatusBar style="dark" />
       <Slot />
-    </>
+    </SafeAreaProvider>
   );
 }
