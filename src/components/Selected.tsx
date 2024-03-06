@@ -23,6 +23,7 @@ export function Selected({ quantity, onClear, onSearch }: SelectedProps) {
         p-6
         rounded-3xl
         bg-black
+        z-10
       "
     >
       <View className="flex-row justify-between items-center mb-8">
