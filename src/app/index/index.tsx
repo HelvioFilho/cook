@@ -1,3 +1,4 @@
+import { Ingredients } from "@/components/Ingredients";
 import { Text, View } from "react-native";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <Text className="font-regular text-bodyMd text-gray-400 mt-3 mb-9">
         Descubra receitas baseadas nos produtos que você escolheu.
       </Text>
+      <Ingredients />
     </View>
   );
 }

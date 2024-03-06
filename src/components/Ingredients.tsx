@@ -1,21 +1,37 @@
 import { ScrollView } from "react-native";
 import { Ingredient } from "./Ingredient";
+import { useState } from "react";
 
 export function Ingredients() {
+  const [selected, setSelected] = useState<string[]>([]);
+
+  function handleToggleSelected(value: string) {
+    if (selected.includes(value)) {
+      setSelected((state) => state.filter((item) => item !== value));
+    } else {
+      setSelected([...selected, value]);
+    }
+  }
+
   return (
     <ScrollView
-      horizontal
-      className="h-14 max-h-14"
       contentContainerStyle={{
+        flexWrap: "wrap",
+        flexDirection: "row",
+        paddingBottom: 200,
         gap: 12,
-        paddingHorizontal: 32,
       }}
-      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
     >
-      <Ingredient />
-      <Ingredient />
-      <Ingredient />
-      <Ingredient />
+      {Array.from({ length: 40 }).map((_, index) => (
+        <Ingredient
+          key={index}
+          name="Maça"
+          image=""
+          selected={selected.includes(String(index))}
+          onPress={() => handleToggleSelected(String(index))}
+        />
+      ))}
     </ScrollView>
   );
 }

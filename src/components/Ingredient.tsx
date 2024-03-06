@@ -1,27 +1,39 @@
-import { Image, Pressable, Text } from "react-native";
+import { Image, Pressable, PressableProps, Text } from "react-native";
 
-export function Ingredient() {
+export type IngredientProps = {
+  name: string;
+  image: string;
+  selected?: boolean;
+};
+
+export function Ingredient({
+  name,
+  image,
+  selected = false,
+  ...rest
+}: IngredientProps & PressableProps) {
   return (
     <Pressable
-      className="
-        border-gray-200
+      className={`
+        ${selected ? "border-green-600 bg-green-100" : "border-gray-200"}
         border-2
         rounded-full
         px-4
         h-11
         items-center
         flex-row
-        gap-6
-      "
+        gap-4
+      `}
+      {...rest}
     >
-      <Image className="w-5 h-5" source={require("@/assets/emoji/apple.png")} />
+      <Image className="w-4 h-4" source={require("@/assets/emoji/apple.png")} />
       <Text
         className="
           font-medium
           text-bodySm
         "
       >
-        Maça
+        {name}
       </Text>
     </Pressable>
   );
