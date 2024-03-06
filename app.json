@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "cook",
+    "slug": "cook",
+    "scheme": "com.hsvf.cook",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/splash/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./src/assets/splash/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hsvf.cook"
+    },
+    "android": {
+      "package": "com.hsvf.cook"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    }
+  }
+}
