@@ -26,7 +26,7 @@ export function Ingredient({
       `}
       {...rest}
     >
-      <Image className="w-4 h-4" source={require("@/assets/emoji/apple.png")} />
+      <Image className="w-4 h-4" source={{ uri: image }} />
       <Text
         className="
           font-medium

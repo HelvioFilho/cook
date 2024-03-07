@@ -1,10 +1,18 @@
 import { Ingredient } from "@/components/Ingredient";
+import { Loading } from "@/components/Loading";
 import { Selected } from "@/components/Selected";
-import { useState } from "react";
+import { services } from "@/services";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
   const [selected, setSelected] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [ingredients, setIngredients] = useState<IngredientResponse[]>([]);
+
+  const { navigate } = router;
 
   function handleToggleSelected(value: string) {
     if (selected.includes(value)) {
@@ -27,8 +35,28 @@ export default function Home() {
     ]);
   }
 
+  function handleSearch() {
+    navigate("/recipes");
+  }
+
+  useEffect(() => {
+    services.ingredients
+      .findAll()
+      .then(setIngredients)
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <View className="flex-1 p-6">
+    <SafeAreaView
+      style={{
+        flex: 1,
+        padding: 24,
+      }}
+    >
       <Text className="text-headingXl font-bold leading-[44px] mt-10">
         Escolha {"\n"}
         <Text className="font-regular">os produtos</Text>
@@ -45,13 +73,13 @@ export default function Home() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        {Array.from({ length: 40 }).map((_, index) => (
+        {ingredients.map((ingredient) => (
           <Ingredient
-            key={index}
-            name="Maça"
-            image=""
-            selected={selected.includes(String(index))}
-            onPress={() => handleToggleSelected(String(index))}
+            key={ingredient.id}
+            name={ingredient.name}
+            image={`${services.storage.imagePath}/${ingredient.image}`}
+            selected={selected.includes(ingredient.id)}
+            onPress={() => handleToggleSelected(ingredient.id)}
           />
         ))}
       </ScrollView>
@@ -60,9 +88,9 @@ export default function Home() {
         <Selected
           quantity={selected.length}
           onClear={handleClearSelected}
-          onSearch={() => {}}
+          onSearch={handleSearch}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
