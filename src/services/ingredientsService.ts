@@ -21,4 +21,14 @@ async function findByIds(ids: string[]) {
   return data ?? [];
 }
 
-export { findAll, findByIds };
+async function findByRecipeId(id: string) {
+  const { data } = await supabase
+    .from("recipes_ingredients")
+    .select("ingredients (id, name, image)")
+    .eq("recipe_id", id)
+    .returns<{ ingredients: IngredientResponse }[]>();
+
+  return data ? data.map((item) => item.ingredients) : [];
+}
+
+export { findAll, findByIds, findByRecipeId };
