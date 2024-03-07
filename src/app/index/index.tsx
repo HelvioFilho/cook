@@ -4,7 +4,7 @@ import { Selected } from "@/components/Selected";
 import { services } from "@/services";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, Text, View } from "react-native";
+import { Alert, ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
   }
 
   function handleSearch() {
-    navigate("/recipes");
+    navigate("/recipes/" + selected);
   }
 
   useEffect(() => {
