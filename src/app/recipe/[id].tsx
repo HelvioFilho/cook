@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { FlatList, Image, Text, View } from "react-native";
+import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import { Step } from "@/components/Step";
 import { Loading } from "@/components/Loading";
 import { Ingredients } from "@/components/ingredients";
 
@@ -13,6 +13,7 @@ export default function Recipes() {
   const [isLoading, setIsLoading] = useState(true);
   const [recipe, setRecipe] = useState<RecipeResponse | null>(null);
   const [ingredients, setIngredients] = useState<IngredientResponse[]>([]);
+  const [preparation, setPreparation] = useState<PreparationsResponse[]>([]);
 
   const { id } = useLocalSearchParams<{ id: string }>();
   const { back } = useRouter();
@@ -34,16 +35,22 @@ export default function Recipes() {
       .then((response) => setIngredients(response));
   }, []);
 
+  useEffect(() => {
+    services.preparation
+      .findByRecipeId(id)
+      .then((response) => setPreparation(response));
+  }, []);
+
   if (isLoading) {
     return <Loading />;
   }
 
+  if (!id || !recipe) {
+    return <Redirect href="/" />;
+  }
+
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}
-    >
+    <View className="flex-1">
       <Image
         className="w-full h-48 bg-gray-300"
         source={{ uri: recipe?.image }}
@@ -56,9 +63,19 @@ export default function Recipes() {
             {recipe?.minutes} minutos de preparo
           </Text>
         </View>
-
         <Ingredients ingredients={ingredients} />
       </View>
-    </SafeAreaView>
+      <View className="px-8 pt-8 pb-20">
+        <Text className="font-medium text-headingSm mb-4">Modo de preparo</Text>
+        <FlatList
+          data={preparation}
+          renderItem={({ item }) => (
+            <Step step={item.step} description={item.description} />
+          )}
+          contentContainerStyle={{ gap: 16 }}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </View>
   );
 }
